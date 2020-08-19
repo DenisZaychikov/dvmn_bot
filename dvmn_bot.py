@@ -37,7 +37,7 @@ if __name__ == '__main__':
     timestamp = None
     while True:
         try:
-            response = requests.get(url, headers=headers, params={'timestamp': timestamp})  # , timeout=10)
+            response = requests.get(url, headers=headers, params={'timestamp': timestamp}, timeout=10)
             response.raise_for_status()
         except requests.ReadTimeout:
             pass
