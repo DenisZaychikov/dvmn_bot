@@ -6,7 +6,7 @@
 
 * `dvmn_token` - токен ученика Devman
 * `dvmn_bot_token` - токен телеграм-бота, который отправит уведомление
-* `user_chat_id` - id телеграм-чата, который получит уведомление
+* `tg_user_chat_id` - id телеграм-чата, который получит уведомление
 
 ### Как запустить на своей машине
 
@@ -20,7 +20,7 @@ pip install -r requirements.txt
     ```
     DVMN_TOKEN=12345
     DVMN_BOT_TOKEN=12345
-    USER_CHAT_ID=12345
+    TG_USER_CHAT_ID=12345
     ```
 
 2. Запустите ```python dvmn_bot.py```

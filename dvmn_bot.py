@@ -5,17 +5,17 @@ from dotenv import load_dotenv
 import os
 
 
-def get_timestamp(data, bot, user_chat_id):
+def get_timestamp(data, bot, tg_user_chat_id):
     if data['status'] == 'found':
         timestamp = data['last_attempt_timestamp']
-        bot_send_message(data, bot, user_chat_id)
+        bot_send_message(data, bot, tg_user_chat_id)
     if data['status'] == 'timeout':
         timestamp = data['timestamp_to_request']
 
     return timestamp
 
 
-def bot_send_message(data, bot, user_chat_id):
+def bot_send_message(data, bot, tg_user_chat_id):
     lesson_title = data['new_attempts'][0]['lesson_title']
     lesson_url = urljoin('https://dvmn.org', data['new_attempts'][0]['lesson_url'])
     if data['new_attempts'][0]['is_negative']:
@@ -23,14 +23,14 @@ def bot_send_message(data, bot, user_chat_id):
     else:
         teacher_decision = f'У вас проверили работу "{lesson_title}"\n{lesson_url}\nПреподавателю все понравилось, можно приступить к следующему уроку!'
 
-    bot.send_message(chat_id=user_chat_id, text=teacher_decision)
+    bot.send_message(chat_id=tg_user_chat_id, text=teacher_decision)
 
 
 if __name__ == '__main__':
     load_dotenv()
     dvmn_token = os.getenv('DVMN_TOKEN')
     dvmn_bot_token = os.getenv('DVMN_BOT_TOKEN')
-    user_chat_id = os.getenv('USER_CHAT_ID')
+    tg_user_chat_id = os.getenv('TG_USER_CHAT_ID')
     url = 'https://dvmn.org/api/long_polling/'
     headers = {'Authorization': f'Token {dvmn_token}'}
     bot = telegram.Bot(token=dvmn_bot_token)
@@ -45,4 +45,4 @@ if __name__ == '__main__':
             pass
         else:
             data = response.json()
-            timestamp = get_timestamp(data, bot, user_chat_id)
+            timestamp = get_timestamp(data, bot, tg_user_chat_id)
