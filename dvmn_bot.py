@@ -3,6 +3,7 @@ import telegram
 from urllib.parse import urljoin
 from dotenv import load_dotenv
 import os
+import time
 
 
 def get_timestamp(data, bot, tg_user_chat_id):
@@ -42,7 +43,7 @@ if __name__ == '__main__':
         except requests.ReadTimeout:
             pass
         except requests.ConnectionError:
-            pass
+            time.sleep(60)
         else:
             data = response.json()
             timestamp = get_timestamp(data, bot, tg_user_chat_id)
