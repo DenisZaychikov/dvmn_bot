@@ -6,20 +6,11 @@ import os
 import time
 
 
-def get_timestamp(data, bot, tg_user_chat_id):
-    if data['status'] == 'found':
-        timestamp = data['last_attempt_timestamp']
-        bot_send_message(data, bot, tg_user_chat_id)
-    if data['status'] == 'timeout':
-        timestamp = data['timestamp_to_request']
-
-    return timestamp
-
-
-def bot_send_message(data, bot, tg_user_chat_id):
-    lesson_title = data['new_attempts'][0]['lesson_title']
-    lesson_url = urljoin('https://dvmn.org', data['new_attempts'][0]['lesson_url'])
-    if data['new_attempts'][0]['is_negative']:
+def send_message(data, bot, tg_user_chat_id):
+    new_attempt = data['new_attempts'][0]
+    lesson_title = new_attempt['lesson_title']
+    lesson_url = urljoin('https://dvmn.org', new_attempt['lesson_url'])
+    if new_attempt['is_negative']:
         teacher_decision = f'У вас проверили работу "{lesson_title}"\n{lesson_url}\nК сожалению, в работе нашлись ошибки'
     else:
         teacher_decision = f'У вас проверили работу "{lesson_title}"\n{lesson_url}\nПреподавателю все понравилось, можно приступить к следующему уроку!'
@@ -38,12 +29,17 @@ if __name__ == '__main__':
     timestamp = None
     while True:
         try:
-            response = requests.get(url, headers=headers, params={'timestamp': timestamp}, timeout=10)
+            response = requests.get(url, headers=headers, params={'timestamp': timestamp}, timeout=100)
             response.raise_for_status()
         except requests.ReadTimeout:
             pass
         except requests.ConnectionError:
+            print('Connection ERROR! Please, wait for 60sec, we will try to connect again!')
             time.sleep(60)
         else:
             data = response.json()
-            timestamp = get_timestamp(data, bot, tg_user_chat_id)
+            if data['status'] == 'found':
+                timestamp = data['last_attempt_timestamp']
+                send_message(data, bot, tg_user_chat_id)
+            if data['status'] == 'timeout':
+                timestamp = data['timestamp_to_request']
