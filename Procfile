@@ -1,1 +1,1 @@
-web: python3 dvmn_bot.py
+bot: python3 dvmn_bot.py
