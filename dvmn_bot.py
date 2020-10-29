@@ -20,9 +20,12 @@ def send_message(data, bot, tg_user_chat_id):
 
 if __name__ == '__main__':
     load_dotenv()
-    dvmn_token = os.getenv('DVMN_TOKEN')
-    dvmn_bot_token = os.getenv('DVMN_BOT_TOKEN')
-    tg_user_chat_id = os.getenv('TG_USER_CHAT_ID')
+    # dvmn_token = os.getenv('DVMN_TOKEN')
+    # dvmn_bot_token = os.getenv('DVMN_BOT_TOKEN')
+    # tg_user_chat_id = os.getenv('TG_USER_CHAT_ID')
+    dvmn_token = os.environ['DVMN_TOKEN']
+    dvmn_bot_token = os.environ['DVMN_BOT_TOKEN']
+    tg_user_chat_id = os.environ['TG_USER_CHAT_ID']
     url = 'https://dvmn.org/api/long_polling/'
     headers = {'Authorization': f'Token {dvmn_token}'}
     bot = telegram.Bot(token=dvmn_bot_token)
