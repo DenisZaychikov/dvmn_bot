@@ -7,6 +7,19 @@ import time
 import logging
 
 
+class TgLogHandler(logging.Handler):
+
+    def __init__(self, tg_bot, tg_user_chat_id):
+        super().__init__()
+        self.tg_bot = tg_bot
+        self.tg_user_chat_id = tg_user_chat_id
+
+    def emit(self, record):
+        msg_to_bot = self.format(record)
+        return self.tg_bot.send_message(chat_id=tg_user_chat_id,
+                                        text=msg_to_bot)
+
+
 def send_message(data, bot, tg_user_chat_id):
     new_attempt = data['new_attempts'][0]
     lesson_title = new_attempt['lesson_title']
@@ -29,20 +42,22 @@ if __name__ == '__main__':
     bot = telegram.Bot(token=dvmn_bot_token)
 
     logger = logging.getLogger()
-    logger.warning('Бот запущен!')
-    # print(type(message))
-    # bot.send_message(chat_id=tg_user_chat_id, text=logger.warning('Бот запущен!'))
-
+    handler = TgLogHandler(bot, tg_user_chat_id)
+    logger.addHandler(handler)
+    logger.warning('Bot is launched')
 
     timestamp = None
     while True:
         try:
-            response = requests.get(url, headers=headers, params={'timestamp': timestamp}, timeout=100)
+            response = requests.get(url, headers=headers,
+                                    params={'timestamp': timestamp},
+                                    timeout=100)
             response.raise_for_status()
         except requests.ReadTimeout:
             pass
         except requests.ConnectionError:
-            print('Connection ERROR! Please, wait for 60sec, we will try to connect again!')
+            print(
+                'Connection ERROR! Please, wait for 60sec, we will try to connect again!')
             time.sleep(60)
         else:
             data = response.json()
