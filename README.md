@@ -11,7 +11,7 @@
 
 ### Как запустить на Heroku
 
-1. Зарегистрируйте приложение на [Heroku]
+1. Зарегистрируйте приложение на [Heroku]: https://id.heroku.com/login "Heroku"
 2. В созданном приложении во вкладке `Deploy`
 привяжите данный github-репозиторий в `Deployment method`
 и нажмите `Deploy Branch` внизу страницы
@@ -39,4 +39,3 @@ pip install -r requirements.txt
 ### Цель проекта
 
 Код написан в образовательных целях на онлайн-курсе для веб-разработчиков [dvmn.org](https://dvmn.org/).
-[Heroku]: https://id.heroku.com/login "Heroku"
