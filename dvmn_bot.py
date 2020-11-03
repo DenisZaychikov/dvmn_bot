@@ -16,8 +16,8 @@ class TgLogHandler(logging.Handler):
 
     def emit(self, record):
         msg_to_bot = self.format(record)
-        return self.tg_bot.send_message(chat_id=tg_user_chat_id,
-                                        text=msg_to_bot)
+        self.tg_bot.send_message(chat_id=tg_user_chat_id,
+                                 text=msg_to_bot)
 
 
 def send_message(data, bot, tg_user_chat_id):
@@ -37,14 +37,13 @@ if __name__ == '__main__':
     dvmn_token = os.environ['DVMN_TOKEN']
     dvmn_bot_token = os.environ['DVMN_BOT_TOKEN']
     tg_user_chat_id = os.environ['TG_USER_CHAT_ID']
-    url = 'https://dvmn.org/api/long_polling/'
+    url = 'https://dvmn.org/api/long_polling/not_found'
     headers = {'Authorization': f'Token {dvmn_token}'}
     bot = telegram.Bot(token=dvmn_bot_token)
 
     logger = logging.getLogger()
     handler = TgLogHandler(bot, tg_user_chat_id)
     logger.addHandler(handler)
-    logger.warning('Bot is launched')
 
     timestamp = None
     while True:
@@ -53,12 +52,13 @@ if __name__ == '__main__':
                                     params={'timestamp': timestamp},
                                     timeout=100)
             response.raise_for_status()
-        except requests.ReadTimeout:
-            pass
-        except requests.ConnectionError:
-            print(
-                'Connection ERROR! Please, wait for 60sec, we will try to connect again!')
-            time.sleep(60)
+        except (
+                requests.exceptions.ReadTimeout,
+                requests.exceptions.HTTPError,
+                requests.exceptions.ConnectionError
+                ) as err:
+            logger.error(err, exc_info=True)
+            time.sleep(20)
         else:
             data = response.json()
             if data['status'] == 'found':
