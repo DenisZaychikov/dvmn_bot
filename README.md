@@ -39,3 +39,4 @@ pip install -r requirements.txt
 ### Цель проекта
 
 Код написан в образовательных целях на онлайн-курсе для веб-разработчиков [dvmn.org](https://dvmn.org/).
+[Heroku]: https://id.heroku.com/login "Heroku"
