@@ -6,6 +6,8 @@ import os
 import time
 import logging
 
+logger = logging.getLogger(__file__)
+
 
 class TgLogHandler(logging.Handler):
 
@@ -41,7 +43,6 @@ if __name__ == '__main__':
     headers = {'Authorization': f'Token {dvmn_token}'}
     bot = telegram.Bot(token=tg_bot_token)
 
-    logger = logging.getLogger()
     handler = TgLogHandler(bot, tg_user_chat_id)
     logger.addHandler(handler)
 
@@ -53,12 +54,13 @@ if __name__ == '__main__':
                                     timeout=100)
             response.raise_for_status()
         except (
-                requests.exceptions.ReadTimeout,
                 requests.exceptions.HTTPError,
                 requests.exceptions.ConnectionError
         ) as err:
             logger.error(err, exc_info=True)
             time.sleep(20)
+        except requests.exceptions.ReadTimeout:
+            pass
         else:
             data = response.json()
             if data['status'] == 'found':
