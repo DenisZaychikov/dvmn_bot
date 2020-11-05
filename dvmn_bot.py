@@ -37,7 +37,7 @@ if __name__ == '__main__':
     dvmn_token = os.environ['DVMN_TOKEN']
     tg_bot_token = os.environ['TG_BOT_TOKEN']
     tg_user_chat_id = os.environ['TG_USER_CHAT_ID']
-    url = 'https://dvmn.org/api/long_polling/not_found'
+    url = 'https://dvmn.org/api/long_polling/'
     headers = {'Authorization': f'Token {dvmn_token}'}
     bot = telegram.Bot(token=tg_bot_token)
 
