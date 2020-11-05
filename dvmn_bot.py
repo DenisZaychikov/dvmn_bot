@@ -35,11 +35,11 @@ def send_message(data, bot, tg_user_chat_id):
 if __name__ == '__main__':
     load_dotenv()
     dvmn_token = os.environ['DVMN_TOKEN']
-    dvmn_bot_token = os.environ['DVMN_BOT_TOKEN']
+    tg_bot_token = os.environ['TG_BOT_TOKEN']
     tg_user_chat_id = os.environ['TG_USER_CHAT_ID']
     url = 'https://dvmn.org/api/long_polling/not_found'
     headers = {'Authorization': f'Token {dvmn_token}'}
-    bot = telegram.Bot(token=dvmn_bot_token)
+    bot = telegram.Bot(token=tg_bot_token)
 
     logger = logging.getLogger()
     handler = TgLogHandler(bot, tg_user_chat_id)
@@ -56,7 +56,7 @@ if __name__ == '__main__':
                 requests.exceptions.ReadTimeout,
                 requests.exceptions.HTTPError,
                 requests.exceptions.ConnectionError
-                ) as err:
+        ) as err:
             logger.error(err, exc_info=True)
             time.sleep(20)
         else:

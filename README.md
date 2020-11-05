@@ -6,7 +6,7 @@
 ## Чтобы запустить, потребуются следующие данные
 
 * `DVMN_TOKEN` - токен ученика Devman
-* `DVMN_BOT_TOKEN` - токен телеграм-бота, который отправит уведомление
+* `TG_BOT_TOKEN` - токен телеграм-бота, который отправит уведомление
 * `TG_USER_CHAT_ID` - id телеграм-чата, который получит уведомление
 
 ### Как запустить на Heroku
@@ -15,7 +15,7 @@
 2. В созданном приложении во вкладке `Deploy`
 привяжите данный github-репозиторий в `Deployment method`
 и нажмите `Deploy Branch` внизу страницы
-3. Во вкладке `Settings` заполните переменные `Config Vars`: `DVMN_TOKEN`, `DVMN_BOT_TOKEN`, `TG_USER_CHAT_ID`
+3. Во вкладке `Settings` заполните переменные `Config Vars`: `DVMN_TOKEN`, `TG_BOT_TOKEN`, `TG_USER_CHAT_ID`
 4. Во вкладке `Resources` запустите сервер
 
 ### Как запустить на своей машине
@@ -29,7 +29,7 @@ pip install -r requirements.txt
 1. Создайте в корневой папке файл ```.env``` и пропишите в нем переменные следующим образом:  
     ```
     DVMN_TOKEN=12345
-    DVMN_BOT_TOKEN=12345
+    TG_BOT_TOKEN=12345
     TG_USER_CHAT_ID=12345
     ```
 
